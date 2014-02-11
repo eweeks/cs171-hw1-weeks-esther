@@ -6,13 +6,121 @@
 
   <style type="text/css">
   /* YOUR CSS */
+  .evenZebra{
+  	color: blue;
+  	background-color:yellow;
+  }
+  
+  .oddZebra{
+  	color: white;
+  	background-color:black;
+  
+  }
+  
+  #hover{
+  	color: black;
+  	background-color: grey;
+  
+  }
+  
+  #test{
+  	background-color:green;
+  
+  }
+  
   </style>
 </head>
 <body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
-  d3.tsv("unemp_states_us_nov_2013.tsv", function(error, data){
+  //variables
+  var title = "Unemployment Rates for States";
+  var tcaption = "Unemployment Rates for States Monthly Rankings Seasonally Adjusted Dec. 2013";
+//  var columns = new Array();
+  
+  
+  d3.text("unemp_states_us_nov_2013.tsv", function(text){
+		
+		var parsed = d3.tsv.parseRows(text);
+		
+		var h1 = d3.select("body").append("h1").text(title);
+		
+		var table = d3.select("body").append("table"),
+			caption = table.append("caption").text(tcaption);
+			thead = table.append("thead");
+     	 	tbody = table.append("tbody");
 
+		
+		
+		table.selectAll("thead")
+					.append("tr");
+					
+		var header = thead.selectAll("tr")
+		//	.append("th");
+		
+		var head = parsed.shift();
+		
+		header.selectAll("th")
+			.data(head)
+			.enter()
+			.append("th")
+			.text(function(d) { return d; });
+
+      	var rows = tbody.selectAll("tr")
+      	.data(parsed)
+      	.enter()
+      	.append("tr")
+      	.attr("class", function(d, i) {
+      		if(i%2==0){
+      		return "evenZebra"
+      		}else{
+      			return"oddZebra"
+      		}
+      	})
+      	.on('mouseover', function(d){
+      		d3.select(this).attr('id', 'hover')
+      	})
+      	.on('mouseout', function(d){
+      		d3.select(this).attr("id", '')
+      			
+      	});
+      	
+
+      	var cells = rows.selectAll("td")
+     	 .data(function(row) {
+       		 return d3.range(Object.keys(row).length).map(function(column, i) {
+        	console.log("column is " + column);
+        	//columns=columns + column;
+        	return row[Object.keys(row)[i]];
+          });
+        })
+      .enter()
+      .append("td")
+      .attr("name", function(d, i){
+      	return "col"+i;
+      })
+      
+      
+      .text(function(d) { return d; })
+      
+       .on('mouseover', function(d,i){
+               //d3.selectAll(columns)
+                //.attr('id', 'test');
+                var holder = d3.select(this).attr("name");
+                d3.selectAll("td").attr('id', 
+                	function(d){
+                		if (d3.select(this).attr("name") == holder){
+                			return "hover";
+                		}else{
+                			return""
+                		}
+                	}
+                );
+            })
+		
+	});
+	
+	/*function(error, data){
       var table = d3.select("body").append("table"),
       tbody = table.append("tbody");
 
@@ -30,7 +138,7 @@
       .enter()
       .append("td")
       .text(function(d) { return d; });
-      });
+      });*/
   </script>
 </body>
 </html>
