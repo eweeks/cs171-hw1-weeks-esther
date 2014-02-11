@@ -117,6 +117,10 @@
                 	}
                 );
             })
+        .on('mouseout', function(d){
+      		d3.select(this).attr("id", '')
+      			
+      	});
 		
 	});
 	
