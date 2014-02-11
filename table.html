@@ -36,7 +36,8 @@
   //variables
   var title = "Unemployment Rates for States";
   var tcaption = "Unemployment Rates for States Monthly Rankings Seasonally Adjusted Dec. 2013";
-//  var columns = new Array();
+  var stateSort = false;
+  var otherSort = false;
   
   
   d3.text("unemp_states_us_nov_2013.tsv", function(text){
@@ -51,7 +52,7 @@
      	 	tbody = table.append("tbody");
 
 		
-		
+		//Create Header
 		table.selectAll("thead")
 					.append("tr");
 					
@@ -65,7 +66,53 @@
 			.enter()
 			.append("th")
 			.text(function(d) { return d; });
-
+		
+		//trying on click function
+			/*	var sortColumn = function(a, b) {
+				sort(function(a, b){
+					return d3.ascending(a[1], b[1]);
+					console.log("ran");
+					});
+				};
+		
+		*/
+		
+		//compare numbers
+		
+		function compareNumbers(a, b) {
+ 			return a - b;
+		};
+		//on click sort
+		header.selectAll("th")
+			.on("click", function(d, i){
+				console.log("Clicked");
+				if(i==1){
+					tbody.selectAll("tr").sort(function(a, b) {
+  						//if(stateSort==true){
+  						return d3.ascending(a[1], b[1]);
+  						stateSort = true;
+  					//}
+  					})
+  				}else{
+  					 tbody.selectAll("tr").sort(function(a, b){
+  					  console.log("a is " + a[0]);
+  					  console.log("b is " + b[0]);
+  					  
+  					  //return compareNumbers(d3.ascending(a[0], b[0]) );
+  					  return d3.ascending(a[0], b[0]);
+  					  //otherSort = true;
+  					  })
+  				}
+				
+				
+				//stateSort = true;
+				rows;
+			});
+		
+		//Fills in body of table
+      
+      
+		//Adds rows to table      
       	var rows = tbody.selectAll("tr")
       	.data(parsed)
       	.enter()
@@ -83,14 +130,37 @@
       	.on('mouseout', function(d){
       		d3.select(this).attr("id", '')
       			
-      	});
+      	})
+      	/*.sort(function(a, b) {
+  			if(stateSort==true){
+  				return d3.ascending(a[1], b[1]);
+  			}
+  			else{
+  				return compareNumbers(a, b);
+  			}
+		})*/;
+      	
       	
 
       	var cells = rows.selectAll("td")
+     	
      	 .data(function(row) {
        		 return d3.range(Object.keys(row).length).map(function(column, i) {
-        	console.log("column is " + column);
+        	//console.log("row is " + row);
+        	//this goes through each "row" of data, in this case it each row has 3 items, 
+        	//and returns the i location in each row, thus filling in
+        	//all the columns in that row
+        	//console.log("output is "+row[Object.keys(row)[i]]);
+        	//console.log("i is " + i);
         	//columns=columns + column;
+        	
+        	//parse info here to number if in row
+        	if(i!=1){
+        		//console.log("Zero");
+        		//console.log(row[Object.keys(row)[i]] );
+        		row[Object.keys(row)[i]] = parseFloat(row[Object.keys(row)[i]] );
+        		//console.log("type is " + typeof(row[Object.keys(row)[i]] ));
+        	}
         	return row[Object.keys(row)[i]];
           });
         })
@@ -123,26 +193,7 @@
       	});
 		
 	});
-	
-	/*function(error, data){
-      var table = d3.select("body").append("table"),
-      tbody = table.append("tbody");
 
-      var rows = tbody.selectAll("tr")
-      .data(data)
-      .enter()
-      .append("tr");
-
-      var cells = rows.selectAll("td")
-      .data(function(row) {
-        return d3.range(Object.keys(row).length).map(function(column, i) {
-          return row[Object.keys(row)[i]];
-          });
-        })
-      .enter()
-      .append("td")
-      .text(function(d) { return d; });
-      });*/
   </script>
 </body>
 </html>
