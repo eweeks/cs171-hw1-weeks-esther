@@ -48,12 +48,16 @@
   //updated to mark which column data is sorted by
   var sorted =0;
   var cursor = "s-resize";
+  var col2=new Array();
+  var min;
+  var max;
+  
   
   
   d3.text("unemp_states_us_nov_2013.tsv", function(text){
 		
 		var parsed = d3.tsv.parseRows(text);
-		
+		//console.log(parsed[2][2] +" is parsed");
 		var h1 = d3.select("body").append("h1").text(title);
 		
 		var table = d3.select("body").append("table"),
@@ -70,6 +74,18 @@
 		//	.append("th");
 		
 		var head = parsed.shift();
+		
+		////get min and max
+		//console.log(parsed.forEach(function(d){
+		//	d.column1 = d.column1;
+		
+		//}
+		//) );
+		
+		/*var color = d3.scale.linear()
+  			.domain([min, max])
+  			.interpolate(d3.interpolateRgb)
+  			.range(["orangered", "silver"]);*/		
 		
 		header.selectAll("th")
 			.data(head)
@@ -98,7 +114,10 @@
 				//console.log(" i is" + i+"d is "+ d);
 				sorted = i;
 				//console.log("sorted is " + i);
-				
+				if(i==3){
+					
+					i=0;
+				}
 				//This works, but could clean up how it is triggered, for example
 				//setting a class to trigger instead of Var
 				if(i==1){
@@ -135,9 +154,12 @@
   					 	 if ( d3.ascending(a[i], b[i]) == 0){
   					  		//console.log("tie A is " + a[i] + " b is " + b[i]);
   					  		thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "s-resize");
+  					  		thead.select("th:nth-of-type(4)").style("cursor", "s-resize");
+  					  		
   					  		return d3.ascending(a[1], b[1]);
   					  	}else{
   					  		thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "s-resize");
+  					  		thead.select("th:nth-of-type(4)").style("cursor", "s-resize");
   					  		return d3.ascending(a[i], b[i]);
   					  	}
   					  	
@@ -150,9 +172,11 @@
   					 
   					 	 if ( d3.descending(a[i], b[i]) == 0){
   					  		thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
+  					  		thead.select("th:nth-of-type(4)").style("cursor", "n-resize");
   					  		return d3.descending(a[1], b[1]);
   					  	}else{
   					  		thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
+  					  		thead.select("th:nth-of-type(4)").style("cursor", "n-resize");
   					  		return d3.descending(a[i], b[i]);
   					  	}
   					
@@ -219,7 +243,7 @@
      	
      	 .data(function(row) {
        		 return d3.range(Object.keys(row).length).map(function(column, i) {
-        	//console.log("row is " + row);
+        	//console.log("row is " + row[0]);
         	//this goes through each "row" of data, in this case it each row has 3 items, 
         	//and returns the i location in each row, thus filling in
         	//all the columns in that row
@@ -227,14 +251,25 @@
         	//console.log("i is " + i);
         	//columns=columns + column;
         	
-        	//parse info here to number if in row
+        	//parse info here to number if in row that is not a state name
         	if(i!=1){
         		//console.log("Zero");
         		//console.log(row[Object.keys(row)[i]] );
         		row[Object.keys(row)[i]] = parseFloat(row[Object.keys(row)[i]] );
         		//console.log("type is " + typeof(row[Object.keys(row)[i]] ));
+        		
+        		if(i==2){
+        			col2.push(row[Object.keys(row)[i]] );
+        			//console.log("Max is " + d3.max(max) );
+        		}
+        	
         	}
         	sortCol(row[i], sorted);
+        	//console.log("i is "+i);
+        	min=d3.min(col2);
+        	//console.log("min is " + min);
+        	max=d3.max(col2);
+        	//console.log("d is " + function(d){d[2]});
         	return row[Object.keys(row)[i]];
           });
           
@@ -242,8 +277,16 @@
       .enter()
       .append("td")
       .attr("name", function(d, i){
+      	//console.log(d +"is");
       	return "col"+i;
+      	
       })
+      /*.style("background-color", function(d, i){
+      		if(d3.select(this).attr("name") == "col2"){
+      			//console.log("i is "+i);
+      			return color(d);
+      		}
+      })*/
       
       
       .text(function(d) { return d; })
@@ -267,16 +310,84 @@
       			
       	});
 		
+		/*var color = d3.scale.linear()
+  			.domain([0, tbody.selectAll("tr")[0].length-1])
+  			.interpolate(d3.interpolateRgb)
+  			.range(["orangered", "silver"]);*/
+  		
+  		//console.log(color(25));
+  		//console.log(tbody.selectAll("tr")[0].length-1);
+  		
+  				//tbody.selectAll
+  				
+  				var color = d3.scale.linear()
+  			.domain([min, max])
+  			.interpolate(d3.interpolateRgb)
+  			.range(["orangered", "silver"]);
+  			
+  			//console.log("Rows " + rows.selectAll("td") );
+  			
+  			rows.selectAll("td")
+  			.style("background-color", function(d){
+      		//console.log("d is "+d);
+      			if(d3.select(this).attr("name") == "col2"){
+      				//console.log("d is "+d);
+      				return color(d);
+      			}
+      		})
+      
+      
+      
+      
+      rows.insert("td")
+    .attr("name", function(d){
+      	return "col3";
+      })
+    .on('mouseover', function(d,i){
+        var holder = d3.select(this).attr("name");
+        d3.selectAll("td").attr('id', function(d){
+        	if (d3.select(this).attr("name") == holder){
+                return "hover";
+             }else{
+                return""
+              }
+         });
+    })
+    .on('mouseout', function(d){
+      	d3.selectAll("td").attr("id", '')
+      			
+    })  
+	.append("svg")
+   .attr("width", 100)
+   .attr("height", 20)
+   .append("rect")
+   .attr("height", 30)
+   .attr("width", function(d) { 
+   //	console.log("D at 0 is " + d[2]);
+   	return parseFloat(d[0]); })
+      
+      
+      thead.select("tr")
+			.insert("th")
+			.text("Chart")
+			.on("click", sortCol);
+			
+
+      
 	});
 	
-	cat(1);
-	console.log("Returned " + cat(1) );
 	
-	function cat (d){
-		console.log("Cats are " + d);
-		return d+1;
-	}
+	//d3.select("thead").select("tr").insert("th")
+	//	.text("New!");
+		
 
+	
+	
+	
   </script>
+  <div style ="color: #ff4500;"> </div>
+  <div style ="color: #f25e26;"> </div>
+  <div style ="color: #42ffff;"> </div>
 </body>
+
 </html>
