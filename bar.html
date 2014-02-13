@@ -99,14 +99,14 @@
   				//var h = groups(d.Rate);
   				//console.log(d.Rate);
   				
-  				data=d3.select("g").selectAll(".info")
+  				Ydata=d3.select("g").selectAll(".info")
   					.sort(function(a, b){
   					//console.log("a is " + a.Rate+" b is" + b.State);
-  					console.log(a.State);
+  					//console.log(a.State);
   						if(value=="State"){
   							return d3.ascending(a.State, b.State);
   						}else{
-  							return d3.ascending(a.Rate, b.Rate);
+  							return d3.descending(a.Rate, b.Rate);
   						}
   					});
   					//.attr("x", function(d, i) {
@@ -115,9 +115,21 @@
   				
   				//return d3.ascending(a, b);
   			//});
-  			data= data.data();
-  			//console.log(data);
-  			//yScale.domain(sorted.map(state));
+  			Ydata= Ydata.data();
+  			//console.log("Data ");
+  			//console.log(data[0].State);
+  			//data(filtered_data, function(d) {  (data[i].State)    });
+  			
+  			var s = function(d, i){
+  				 console.log("D is " + d.State);
+  				 return d.State; 
+  			
+  			
+  			};
+  			
+  			yScale.domain(Ydata.map(s) );
+  			//s;
+  			//yScale.domain(data.map(data[1].state));
   			//console.log("s is" + data[0].State);
   			
   			groups
@@ -126,7 +138,8 @@
   				.delay(function(d, i){ return i *10; })
   				.attr("transform", function(d, i){ /*console.log(i);*/
   					//i=i+1;
-  					return "translate(0,"+yScale(data[i].State)+")"; });
+  					//console.log("i is " + i);
+  					return "translate(0,"+yScale(Ydata[i].State)+")"; });
    			
    		};
    		d3.selectAll("input").on("change", function(){
