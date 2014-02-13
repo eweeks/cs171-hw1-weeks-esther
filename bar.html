@@ -68,13 +68,19 @@
         .attr("x", function(d) { return xScale(d.Rate); })
         .attr("y", function(d) { return bar_height/2; })
         .text(function(d) { return d.Rate; })
-        .attr("class", 'Rate');
+        .attr("class", 'Rate')
+        .attr("dx", -10)
+        .attr("dy", 3)
+        .attr("text-anchor", "end");
 
 		groups.append("text")
         .attr("x", function(d) { return xScale(min); })
         .attr("y", function(d) { return bar_height/2; })
         .text(function(d) { return d.State; })
-        .attr("class", 'State');
+        .attr("class", 'State')
+        .attr("dx", -20)
+        .attr("dy", 3)
+        .attr("text-anchor", "end");
         
     
 
@@ -120,15 +126,22 @@
   			//console.log(data[0].State);
   			//data(filtered_data, function(d) {  (data[i].State)    });
   			
-  			var s = function(d, i){
+  			function s(){ 
+  				//function(d, i){
   				 console.log("D is " + d.State);
-  				 return d.State; 
+  				 //return d.State; 
+  				 yScale.domain(Ydata.map(s));
   			
-  			
+  				//}
   			};
   			
-  			yScale.domain(Ydata.map(s) );
-  			//s;
+  			var gr =  function(d) { 
+  				console.log("D is " + d.State);
+  				return d.State; };
+  			//Convinced this is the problem... but why?
+  			//yScale.domain(Ydata.map(state));
+  			s;
+  			yScale.domain(data.map(gr));
   			//yScale.domain(data.map(data[1].state));
   			//console.log("s is" + data[0].State);
   			

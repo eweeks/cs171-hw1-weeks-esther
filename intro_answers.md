@@ -8,7 +8,7 @@ Intro Questions - Esther Weeks
  	- Adding a shape or bar comparison to give a visual impression of the relationships
  		between the numbers. 
 
-2. 3 examples:
+2. Examples:
 	1. http://labs.enigma.io/shutdown2013/
 		-Similar to the example we looked at in class week 2, but an interactive 
 		comparison. 
