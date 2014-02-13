@@ -13,7 +13,12 @@
   </style>
 </head>
 <body>
-  <script type="text/javascript">
+ 	<div>
+ 		<label><input type="radio" name="order" value="state"> State</label>
+		<label><input type="radio" name="order" value="rate" checked> Rate</label>
+	</div>
+
+ <script type="text/javascript">
 
     var margin = {top: 50, bottom: 10, left:300, right: 40};
     var width = 900 - margin.left - margin.right;
@@ -25,22 +30,26 @@
     var bar_height = 15;
 
     var state = function(d) { return d.State; };
+    
 
     var svg = d3.select("body").append("svg")
       .attr("width", width+margin.left+margin.right)
       .attr("height", height+margin.top+margin.bottom);
 
     var g = svg.append("g")
-      .attr("transform", "translate("+margin.left+","+margin.top+")");
+      .attr("transform", "translate("+margin.left+","+margin.top+")")
+       g.append("text", "rect")
+        .text(function(d) { return "Unemployment Rates For States"; });
 
     d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
 
-      var max = d3.max(data, function(d) { return d.Rate; } );
+      var max = d3.max(data, function(d) {  return d.Rate; }  );
       var min = 0;
 
       xScale.domain([min, max]);
       yScale.domain(data.map(state));
 
+	//this is adding two of the g groups
       var groups = g.append("g")
         .selectAll("g")
         .data(data)
@@ -52,8 +61,63 @@
         .append("rect")
         .attr("width", function(d) { return xScale(d.Rate); })
         .attr("height", bar_height);
+        
+        groups.append("text")
+        .attr("x", function(d) { return xScale(d.Rate); })
+        .attr("y", function(d) { return bar_height/2; })
+        .text(function(d) { return d.Rate; })
+        .attr("class", 'Rate');
+
+		groups.append("text")
+        .attr("x", function(d) { return xScale(min); })
+        .attr("y", function(d) { return bar_height/2; })
+        .text(function(d) { return d.State; })
+        .attr("class", 'State');
+        
+    
+
+   		function reorder(d){
+   			//var t =d3.select("g").selectAll("#Rate");
+   			//console.log(t);
+   			/*groups.selectAll("g").sort(function (a, b){
+   				console.log("something " + a + b);
+   				return d3.ascending(a[1], b[1]);
+   			});*/
+   			
+   			//console.log("ReOrder " );
+   				//var h = function(d){
+   					//return d.State;
+   					
+   			//	};
+   				//console.log(" h is " +h);
+   				//groups.selectAll("text").sort(function(a, b) {
+  				//.select(d.State);
+  				//var h = groups(d.Rate);
+  				//console.log(d.Rate);
+  				d3.select("g").selectAll(".Rate")
+  					.sort(function(a, b){
+  					console.log("a is " + a+" b is" + b);
+  					console.log(selectAll(".Rate") );
+  						return d3.ascending(a, b);
+  					})
+  					//.attr("x", function(d, i) {
+                 	//	return xScale(i);
+          			 //});
+  				
+  				//return d3.ascending(a, b);
+  			//});
+  			groups
+  				.transition()
+  				.duration(750)
+  				.delay(function(d, i){ return i *10; })
+  				.attr("transform", function(d, i){return "translate("+ i + ","+yScale(d.State)+")"; })
+   			
+   		};
+   		d3.selectAll("input").on("change", reorder);
 
     });
   </script>
+
+
 </body>
 </html>
