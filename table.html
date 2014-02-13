@@ -126,6 +126,7 @@
 						tbody.selectAll("tr").sort(function(a, b) {
   							//cursor = "s-resize";
   							thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "s-resize");
+  							console.log(parsed);
   							return d3.ascending(a[1], b[1]);
   						});
   							//thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
@@ -136,6 +137,7 @@
   								//cursor = "n-resize";
   								//console.log("curs " + cursor);
   								thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
+  								console.log(parsed);
   								return d3.descending(a[1], b[1]);
   							});
   						}
@@ -179,7 +181,8 @@
   					  		thead.select("th:nth-of-type(4)").style("cursor", "n-resize");
   					  		return d3.descending(a[i], b[i]);
   					  	}
-  					
+  							
+  						
   					  });//end sort  					  	
   					  }
   				}
@@ -371,6 +374,8 @@
 			.insert("th")
 			.text("Chart")
 			.on("click", sortCol);
+			
+			
 			
 
       

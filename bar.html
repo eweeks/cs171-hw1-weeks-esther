@@ -48,6 +48,7 @@
 
       xScale.domain([min, max]);
       yScale.domain(data.map(state));
+      //console.log(data);
 
 	//this is adding two of the g groups
       var groups = g.append("g")
@@ -95,11 +96,13 @@
   				//.select(d.State);
   				//var h = groups(d.Rate);
   				//console.log(d.Rate);
-  				d3.select("g").selectAll(".State")
+  				
+  				data=d3.select("g").selectAll(".info")
   					.sort(function(a, b){
-  					console.log("a is " + a+" b is" + b);
-  					console.log(d3.selectAll(".info") );
-  						return d3.ascending(a, b);
+  					//console.log("a is " + a.Rate+" b is" + b.State);
+  					//console.log(d3.selectAll(".info") );
+  					
+  						return d3.ascending(a.State, b.State);
   					});
   					//.attr("x", function(d, i) {
                  	//	return xScale(i);
@@ -107,11 +110,18 @@
   				
   				//return d3.ascending(a, b);
   			//});
-  			/*groups
+  			data= data.data();
+  			//console.log(data);
+  			//yScale.domain(sorted.map(state));
+  			console.log("s is" + data[0].State);
+  			
+  			groups
   				.transition()
   				.duration(750)
   				.delay(function(d, i){ return i *10; })
-  				.attr("transform", function(d, i){return "translate("+ i + ","+yScale(d.State)+")"; });*/
+  				.attr("transform", function(d, i){ console.log(i);
+  					//i=i+1;
+  					return "translate(0,"+yScale(data[i].State)+")"; });
    			
    		};
    		d3.selectAll("input").on("change", reorder);
