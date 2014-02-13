@@ -55,7 +55,8 @@
         .data(data)
       .enter()
         .append("g")
-        .attr("transform", function(d, i) { return "translate(0, " + yScale(d.State) +")"; });
+        .attr("transform", function(d, i) { return "translate(0, " + yScale(d.State) +")"; })
+        .attr("class", 'info');
 
       var bars = groups
         .append("rect")
@@ -76,7 +77,7 @@
         
     
 
-   		function reorder(d){
+   		function reorder(){
    			//var t =d3.select("g").selectAll("#Rate");
    			//console.log(t);
    			/*groups.selectAll("g").sort(function (a, b){
@@ -94,23 +95,23 @@
   				//.select(d.State);
   				//var h = groups(d.Rate);
   				//console.log(d.Rate);
-  				d3.select("g").selectAll(".Rate")
+  				d3.select("g").selectAll(".State")
   					.sort(function(a, b){
   					console.log("a is " + a+" b is" + b);
-  					console.log(selectAll(".Rate") );
+  					console.log(d3.selectAll(".info") );
   						return d3.ascending(a, b);
-  					})
+  					});
   					//.attr("x", function(d, i) {
                  	//	return xScale(i);
           			 //});
   				
   				//return d3.ascending(a, b);
   			//});
-  			groups
+  			/*groups
   				.transition()
   				.duration(750)
   				.delay(function(d, i){ return i *10; })
-  				.attr("transform", function(d, i){return "translate("+ i + ","+yScale(d.State)+")"; })
+  				.attr("transform", function(d, i){return "translate("+ i + ","+yScale(d.State)+")"; });*/
    			
    		};
    		d3.selectAll("input").on("change", reorder);
