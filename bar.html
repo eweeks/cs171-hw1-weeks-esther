@@ -14,7 +14,7 @@
 </head>
 <body>
  	<div>
- 		<label><input type="radio" name="order" value="state"> State</label>
+ 		<label><input type="radio" name="order" value="State"> State</label>
 		<label><input type="radio" name="order" value="rate" checked> Rate</label>
 	</div>
 
@@ -78,7 +78,9 @@
         
     
 
-   		function reorder(){
+   		function reorder(v){
+   			value=v;
+   			console.log("v is " + value);
    			//var t =d3.select("g").selectAll("#Rate");
    			//console.log(t);
    			/*groups.selectAll("g").sort(function (a, b){
@@ -100,9 +102,12 @@
   				data=d3.select("g").selectAll(".info")
   					.sort(function(a, b){
   					//console.log("a is " + a.Rate+" b is" + b.State);
-  					//console.log(d3.selectAll(".info") );
-  					
-  						return d3.ascending(a.State, b.State);
+  					console.log(a.State);
+  						if(value=="State"){
+  							return d3.ascending(a.State, b.State);
+  						}else{
+  							return d3.ascending(a.Rate, b.Rate);
+  						}
   					});
   					//.attr("x", function(d, i) {
                  	//	return xScale(i);
@@ -113,18 +118,23 @@
   			data= data.data();
   			//console.log(data);
   			//yScale.domain(sorted.map(state));
-  			console.log("s is" + data[0].State);
+  			//console.log("s is" + data[0].State);
   			
   			groups
   				.transition()
   				.duration(750)
   				.delay(function(d, i){ return i *10; })
-  				.attr("transform", function(d, i){ console.log(i);
+  				.attr("transform", function(d, i){ /*console.log(i);*/
   					//i=i+1;
   					return "translate(0,"+yScale(data[i].State)+")"; });
    			
    		};
-   		d3.selectAll("input").on("change", reorder);
+   		d3.selectAll("input").on("change", function(){
+   			var value = this. value;
+   			reorder(value);
+   		})
+   		
+   		
 
     });
   </script>
