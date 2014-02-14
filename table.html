@@ -88,6 +88,15 @@
 			.append("th")
 			.text(function(d) { return d; });
 
+		function zebra(d, i){
+			if(i%2==0){
+      			return "evenZebra"
+      		}else{
+      			return"oddZebra"
+      		}
+		};
+
+
 		//function for sorting
 		function sortCol(d, i) {
 				sorted = i;
@@ -132,15 +141,10 @@
   					  });//end sort  					  	
   	
   				}
-
+				
+				
 				tbody.selectAll("tr")
-				.attr("class", function(d, i) {
-      				if(i%2==0){
-      					return "evenZebra"
-      				}else{
-      					return"oddZebra"
-      				}
-      			});
+				.attr("class", zebra);
 		}		
 		//on click sort
 		header.selectAll("th")
@@ -154,13 +158,7 @@
       	.data(parsed)
       	.enter()
       	.append("tr")
-      	.attr("class", function(d, i) {
-      		if(i%2==0){
-      		return "evenZebra"
-      		}else{
-      			return"oddZebra"
-      		}
-      	})
+      	.attr("class", zebra)
       	.on('mouseover', function(d){
       		d3.select(this).attr('id', 'hover')
       	})
@@ -247,12 +245,15 @@
       			
     })  
 	.append("svg")
-   .attr("width", 100)
-   .attr("height", 20)
+   .attr({
+   		width: 100,
+   		height: 20
+   	})
    .append("rect")
-   .attr("height", 30)
-   .attr("width", function(d) { 
-   		return parseFloat(d[0]); })
+   .attr({
+   		height: 30,
+   		width: function(d){ return parseFloat(d[0]);}
+   	})
    	.style("fill", "#AA4747");
    		
     thead.select("tr")

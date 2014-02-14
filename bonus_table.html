@@ -245,12 +245,15 @@
       			
     })  
 	.append("svg")
-   .attr("width", 100)
-   .attr("height", 20)
+   .attr({
+   		width: 100,
+   		height: 20
+   	})
    .append("rect")
-   .attr("height", 30)
-   .attr("width", function(d) { 
-   		return parseFloat(d[0]); })
+   .attr({
+   		height: 30,
+   		width: function(d){ return parseFloat(d[0]);}
+   	})
    	.style("fill", "#AA4747");
    		
     thead.select("tr")
