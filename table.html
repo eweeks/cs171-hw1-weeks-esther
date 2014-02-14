@@ -50,9 +50,7 @@
   var col2=new Array();
   var min;
   var max;
-  
-  
-  
+
   d3.text("unemp_states_us_nov_2013.tsv", function(text){
 		
 		var parsed = d3.tsv.parseRows(text);
@@ -123,9 +121,7 @@
   					  });//end sort  					  	
   	
   				}
-				
-				
-				//stateSort = true;
+
 				tbody.selectAll("tr")
 				.attr("class", function(d, i) {
       				if(i%2==0){
@@ -134,8 +130,6 @@
       					return"oddZebra"
       				}
       			});
-		
-		
 		}		
 		//on click sort
 		header.selectAll("th")
@@ -143,8 +137,7 @@
 
 		
 		//Fills in body of table
-      
-      
+
 		//Adds rows to table      
       	var rows = tbody.selectAll("tr")
       	.data(parsed)
@@ -165,18 +158,11 @@
       			
       	});
       	
-      	
-
       	var cells = rows.selectAll("td")
      	
      	 .data(function(row) {
        		 return d3.range(Object.keys(row).length).map(function(column, i) {
 
-        	//this goes through each "row" of data, in this case it each row has 3 items, 
-        	//and returns the i location in each row, thus filling in
-        	//all the columns in that row
-
-        	
         	//parse info here to number if in row that is not a state name
         	if(i!=1){
         		//console.log("Zero");
@@ -199,10 +185,7 @@
       .append("td")
       .attr("name", function(d, i){
       	return "col"+i;
-      	
       })
-      
-      
       .text(function(d) { return d; })
       
        .on('mouseover', function(d,i){
@@ -224,7 +207,7 @@
       			
       	});
   				
-  				var color = d3.scale.linear()
+  			var color = d3.scale.linear()
   			.domain([min, max])
   			.interpolate(d3.interpolateRgb)
   			.range(["orangered", "silver"]);
@@ -260,19 +243,14 @@
    .append("rect")
    .attr("height", 30)
    .attr("width", function(d) { 
-
-   	return parseFloat(d[0]); })
-      
-      
-      thead.select("tr")
-			.insert("th")
-			.text("Chart")
-			.on("click", sortCol);
-			
+   		return parseFloat(d[0]); });
+   		
+    thead.select("tr")
+		.insert("th")
+		.text("Chart")
+		.on("click", sortCol);	
 	});
 
-  </script>
-
-</body>
-
+  	</script>
+	</body>
 </html>
