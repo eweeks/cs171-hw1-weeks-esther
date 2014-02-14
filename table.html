@@ -87,25 +87,7 @@
 				}
 				//This works, but could clean up how it is triggered, for example
 				//setting a class to trigger instead of Var
-				if(i==1){
-					if(aSort!=1){
-  						aSort=1;
-						tbody.selectAll("tr").sort(function(a, b) {
-  							thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "s-resize");
-  							return d3.ascending(a[1], b[1]);
-  						});
-  							
-  						}else{
-  							aSort=2;
-  							tbody.selectAll("tr").sort(function(a, b) {
-  								thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
-  								return d3.descending(a[1], b[1]);
-  							});
-  						}
-  					
-  					
-  				}else{
-  					 //ascending sort with numbers
+				
   					 if(nSort!=1){
   					 	nSort=1;
   					 	tbody.selectAll("tr").sort(function(a, b){
@@ -139,7 +121,7 @@
   							
   						
   					  });//end sort  					  	
-  					  }
+  	
   				}
 				
 				
@@ -157,7 +139,7 @@
 		}		
 		//on click sort
 		header.selectAll("th")
-			.on("click", sortCol)
+			.on("click", sortCol);
 
 		
 		//Fills in body of table
