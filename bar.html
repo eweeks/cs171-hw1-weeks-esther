@@ -4,11 +4,18 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
   <style type="text/css">
     rect {
-        //fill: teal;
         fill-opacity: .8;
     }
     text {
         font: 10px sans-serif;
+    }
+    #heading{
+    	font-size: 1.5em;
+    	color: black;
+    }
+    div{
+    	margin-left: 4em;
+    	margin-top: 4em;
     }
   </style>
 </head>
@@ -29,7 +36,7 @@
 
     var bar_height = 15;
     var sortS = 0;
-    var sortR = 0;
+    var sortR = 1;
 
     var state = function(d) { return d.State; };
     
@@ -39,9 +46,10 @@
       .attr("height", height+margin.top+margin.bottom);
 
     var g = svg.append("g")
-      .attr("transform", "translate("+margin.left+","+margin.top+")")
-       g.append("text", "rect")
-        .text(function(d) { return "Unemployment Rates For States"; });
+      	.attr("transform", "translate("+margin.left+","+margin.top+")")
+       	g.append("text", "rect")
+		.text(function(d) { return "Unemployment Rates For States"; })
+		.attr('id', "heading");
 
     d3.tsv("unemp_states_us_nov_2013.tsv", function(data) {
 
@@ -81,9 +89,10 @@
         .attr("y", function(d) { return bar_height/2; })
         .text(function(d) { return d.State; })
         .attr("class", 'State')
-        .attr("dx", -20)
+        .attr("dx", -15)
         .attr("dy", 3)
-        .attr("text-anchor", "end");
+        .attr("text-anchor", "end")
+        .style("fill", "teal");
         
     
 
@@ -129,7 +138,6 @@
   				
   					
   			yScale.domain(yData.map(state));
-  			console.log(yData.map(state));
   			
   			groups
   				.transition()

@@ -6,35 +6,48 @@
 
   <style type="text/css">
   /* YOUR CSS */
+	h1 {
+		margin-left: 5em;
+	}
+	table {
+		margin-left: 11em;
+		font: 16px sans-serif;
+	}
+	
+	caption {
+		padding-bottom: 1em;
+	}
+
+	
   .evenZebra{
-  	color: blue;
-  	background-color:yellow;
+  	color: black;
+  	background-color: #EBE1CA;
   }
   
   .oddZebra{
-  	color: white;
-  	background-color:black;
+  	color: black;
+  	background-color:  #DBCCA8;
   
   }
   
   #hover{
-  	color: black;
-  	background-color: grey;
-  
-  }
-  
-  #test{
-  	background-color:green;
+  	color:   rgb(92, 43, 4);
+  	background-color: #BEA05A;
   
   }
   
   tr th {
-  cursor: s-resize;
+  	cursor: s-resize;
   }
+  
+  td {
+	padding: 0.3em;
+	}
   
   </style>
 </head>
 <body>
+
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
  
@@ -54,7 +67,6 @@
   d3.text("unemp_states_us_nov_2013.tsv", function(text){
 		
 		var parsed = d3.tsv.parseRows(text);
-		//console.log(parsed[2][2] +" is parsed");
 		var h1 = d3.select("body").append("h1").text(title);
 		
 		var table = d3.select("body").append("table"),
@@ -78,7 +90,6 @@
 
 		//function for sorting
 		function sortCol(d, i) {
-				console.log("d is "+ d);
 				sorted = i;
 				if(i==3){
 					i=0;
@@ -165,8 +176,6 @@
 
         	//parse info here to number if in row that is not a state name
         	if(i!=1){
-        		//console.log("Zero");
-        		//console.log(row[Object.keys(row)[i]] );
         		row[Object.keys(row)[i]] = parseFloat(row[Object.keys(row)[i]] );
         		
         		if(i==2){
@@ -210,7 +219,7 @@
   			var color = d3.scale.linear()
   			.domain([min, max])
   			.interpolate(d3.interpolateRgb)
-  			.range(["orangered", "silver"]);
+  			.range(["#C5C3C3", "rgb(192, 77, 77, 1)"]);
   			
   			rows.selectAll("td")
   			.style("background-color", function(d){
@@ -243,7 +252,8 @@
    .append("rect")
    .attr("height", 30)
    .attr("width", function(d) { 
-   		return parseFloat(d[0]); });
+   		return parseFloat(d[0]); })
+   	.style("fill", "#AA4747");
    		
     thead.select("tr")
 		.insert("th")
