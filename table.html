@@ -37,13 +37,12 @@
 <body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
+ 
   //variables
   var title = "Unemployment Rates for States";
   var tcaption = "Unemployment Rates for States Monthly Rankings Seasonally Adjusted Dec. 2013";
-  //var stateSort = false;
-  //var otherSort = false;
-  var ace =3;
-  var num = 3;
+  var aSort =3;
+  var nSort = 3;
   //var sets which column data will initially be sorted by, and is
   //updated to mark which column data is sorted by
   var sorted =0;
@@ -70,74 +69,36 @@
 		table.selectAll("thead")
 					.append("tr");
 					
-		var header = thead.selectAll("tr")
-		//	.append("th");
-		
-		var head = parsed.shift();
-		
-		////get min and max
-		//console.log(parsed.forEach(function(d){
-		//	d.column1 = d.column1;
-		
-		//}
-		//) );
-		
-		/*var color = d3.scale.linear()
-  			.domain([min, max])
-  			.interpolate(d3.interpolateRgb)
-  			.range(["orangered", "silver"]);*/		
+		var header = thead.selectAll("tr");
+		var head = parsed.shift();		
 		
 		header.selectAll("th")
 			.data(head)
 			.enter()
 			.append("th")
 			.text(function(d) { return d; });
-		
-		//trying on click function
-			/*	var sortColumn = function(a, b) {
-				sort(function(a, b){
-					return d3.ascending(a[1], b[1]);
-					console.log("ran");
-					});
-				};
-		
-		*/
-		
-		//compare numbers
-		
-		//function compareNumbers(a, b) {
- 		//	return a - b;
-		//};
+
 		//function for sorting
 		function sortCol(d, i) {
-				//console.log("Clicked");
 				console.log("d is "+ d);
 				sorted = i;
-				//console.log("sorted is " + i);
 				if(i==3){
-					
 					i=0;
 				}
 				//This works, but could clean up how it is triggered, for example
 				//setting a class to trigger instead of Var
 				if(i==1){
-					if(ace!=1){
-  						ace=1;
+					if(aSort!=1){
+  						aSort=1;
 						tbody.selectAll("tr").sort(function(a, b) {
-  							//cursor = "s-resize";
   							thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "s-resize");
-  							console.log(parsed);
   							return d3.ascending(a[1], b[1]);
   						});
-  							//thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
-  							//console.log(thead.select("th:nth-child("+i+2+")"));
+  							
   						}else{
-  							ace=2;
+  							aSort=2;
   							tbody.selectAll("tr").sort(function(a, b) {
-  								//cursor = "n-resize";
-  								//console.log("curs " + cursor);
   								thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "n-resize");
-  								console.log(parsed);
   								return d3.descending(a[1], b[1]);
   							});
   						}
@@ -145,16 +106,10 @@
   					
   				}else{
   					 //ascending sort with numbers
-  					 if(num!=1){
-  					 	num=1;
+  					 if(nSort!=1){
+  					 	nSort=1;
   					 	tbody.selectAll("tr").sort(function(a, b){
-  					 	 //console.log(tbody.selectAll("tr"));
-  					 	 //console.log("b is " + b[0]);
-  					 	// console.log(" i is" + i);
-  					 	 //return compareNumbers(d3.ascending(a[0], b[0]) );
-  					 	 //cursor = "s-resize";
   					 	 if ( d3.ascending(a[i], b[i]) == 0){
-  					  		//console.log("tie A is " + a[i] + " b is " + b[i]);
   					  		thead.select("th:nth-of-type("+(i+1)+")").style("cursor", "s-resize");
   					  		thead.select("th:nth-of-type(4)").style("cursor", "s-resize");
   					  		
@@ -169,7 +124,7 @@
   					 
   					 //descending sort with numbers
   					  }else{
-  					  	num=2;
+  					  	nSort=2;
   					 	tbody.selectAll("tr").sort(function(a, b){
   					 
   					 	 if ( d3.descending(a[i], b[i]) == 0){
@@ -197,16 +152,12 @@
       					return"oddZebra"
       				}
       			});
-				//rows;
-			//});		
+		
 		
 		}		
 		//on click sort
 		header.selectAll("th")
 			.on("click", sortCol)
-			//.on("mouseover", function(d, i){
-				//d3.select(this).style("cursor", cursor)
-			//})
 
 		
 		//Fills in body of table
@@ -230,15 +181,7 @@
       	.on('mouseout', function(d){
       		d3.select(this).attr("id", '')
       			
-      	})
-      	/*.sort(function(a, b) {
-  			if(stateSort==true){
-  				return d3.ascending(a[1], b[1]);
-  			}
-  			else{
-  				return compareNumbers(a, b);
-  			}
-		})*/;
+      	});
       	
       	
 
@@ -246,33 +189,26 @@
      	
      	 .data(function(row) {
        		 return d3.range(Object.keys(row).length).map(function(column, i) {
-        	//console.log("row is " + row[0]);
+
         	//this goes through each "row" of data, in this case it each row has 3 items, 
         	//and returns the i location in each row, thus filling in
         	//all the columns in that row
-        	//console.log("output is "+row[Object.keys(row)[i]]);
-        	//console.log("i is " + i);
-        	//columns=columns + column;
+
         	
         	//parse info here to number if in row that is not a state name
         	if(i!=1){
         		//console.log("Zero");
         		//console.log(row[Object.keys(row)[i]] );
         		row[Object.keys(row)[i]] = parseFloat(row[Object.keys(row)[i]] );
-        		//console.log("type is " + typeof(row[Object.keys(row)[i]] ));
         		
         		if(i==2){
         			col2.push(row[Object.keys(row)[i]] );
-        			//console.log("Max is " + d3.max(max) );
         		}
         	
         	}
         	sortCol(row[i], sorted);
-        	//console.log("i is "+i);
         	min=d3.min(col2);
-        	//console.log("min is " + min);
         	max=d3.max(col2);
-        	//console.log("d is " + function(d){d[2]});
         	return row[Object.keys(row)[i]];
           });
           
@@ -280,16 +216,9 @@
       .enter()
       .append("td")
       .attr("name", function(d, i){
-      	//console.log(d +"is");
       	return "col"+i;
       	
       })
-      /*.style("background-color", function(d, i){
-      		if(d3.select(this).attr("name") == "col2"){
-      			//console.log("i is "+i);
-      			return color(d);
-      		}
-      })*/
       
       
       .text(function(d) { return d; })
@@ -312,36 +241,19 @@
       		d3.selectAll("td").attr("id", '')
       			
       	});
-		
-		/*var color = d3.scale.linear()
-  			.domain([0, tbody.selectAll("tr")[0].length-1])
-  			.interpolate(d3.interpolateRgb)
-  			.range(["orangered", "silver"]);*/
-  		
-  		//console.log(color(25));
-  		//console.log(tbody.selectAll("tr")[0].length-1);
-  		
-  				//tbody.selectAll
   				
   				var color = d3.scale.linear()
   			.domain([min, max])
   			.interpolate(d3.interpolateRgb)
   			.range(["orangered", "silver"]);
   			
-  			//console.log("Rows " + rows.selectAll("td") );
-  			
   			rows.selectAll("td")
   			.style("background-color", function(d){
-      		//console.log("d is "+d);
       			if(d3.select(this).attr("name") == "col2"){
-      				//console.log("d is "+d);
       				return color(d);
       			}
       		})
-      
-      
-      
-      
+   
       rows.insert("td")
     .attr("name", function(d){
       	return "col3";
@@ -366,7 +278,7 @@
    .append("rect")
    .attr("height", 30)
    .attr("width", function(d) { 
-   //	console.log("D at 0 is " + d[2]);
+
    	return parseFloat(d[0]); })
       
       
@@ -375,24 +287,10 @@
 			.text("Chart")
 			.on("click", sortCol);
 			
-			
-			
-
-      
 	});
-	
-	
-	//d3.select("thead").select("tr").insert("th")
-	//	.text("New!");
-		
 
-	
-	
-	
   </script>
-  <div style ="color: #ff4500;"> </div>
-  <div style ="color: #f25e26;"> </div>
-  <div style ="color: #42ffff;"> </div>
+
 </body>
 
 </html>
