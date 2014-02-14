@@ -28,6 +28,8 @@
     var yScale = d3.scale.ordinal().rangeRoundBands([0, height], .8, 0);
 
     var bar_height = 15;
+    var sortS =1;
+    var sortR = 1;
 
     var state = function(d) { return d.State; };
     
@@ -85,78 +87,45 @@
     
 
    		function reorder(v){
-   			value=v;
-   			console.log("v is " + value);
-   			//var t =d3.select("g").selectAll("#Rate");
-   			//console.log(t);
-   			/*groups.selectAll("g").sort(function (a, b){
-   				console.log("something " + a + b);
-   				return d3.ascending(a[1], b[1]);
-   			});*/
-   			
-   			//console.log("ReOrder " );
-   				//var h = function(d){
-   					//return d.State;
-   					
-   			//	};
-   				//console.log(" h is " +h);
-   				//groups.selectAll("text").sort(function(a, b) {
-  				//.select(d.State);
-  				//var h = groups(d.Rate);
-  				//console.log(d.Rate);
-  				
-  				Ydata=d3.select("g").selectAll(".info")
+   			value=v;	
+  				yData=d3.select("g").selectAll(".info")
   					.sort(function(a, b){
   					//console.log("a is " + a.Rate+" b is" + b.State);
   					//console.log(a.State);
   						if(value=="State"){
-  							return d3.ascending(a.State, b.State);
+  							if(sortS =! 1){
+  								sortS == 1;
+  								return d3.descending(a.State, b.State);
+  							}else{
+  								sortS == 0;
+  								return d3.ascending(a.State, b.State);
+  							}
+  						
   						}else{
-  							return d3.descending(a.Rate, b.Rate);
+  							if(sortR =! 1){
+  								sortR== 1;
+  								return d3.descending(a.Rate, b.Rate);
+  							}else{
+  								sortR == 0;
+  								return d3.ascending(a.Rate, b.Rate);
+  							}
   						}
-  					});
-  					//.attr("x", function(d, i) {
-                 	//	return xScale(i);
-          			 //});
-  				
-  				//return d3.ascending(a, b);
-  			//});
-  			Ydata= Ydata.data();
-  			//console.log("Data ");
-  			//console.log(data[0].State);
-  			//data(filtered_data, function(d) {  (data[i].State)    });
+  					}).data();
+  					
+  			//yScale.domain(yData.map(state));
   			
-  			function s(){ 
-  				//function(d, i){
-  				 console.log("D is " + d.State);
-  				 //return d.State; 
-  				 yScale.domain(Ydata.map(s));
-  			
-  				//}
-  			};
-  			
-  			var gr =  function(d) { 
-  				console.log("D is " + d.State);
-  				return d.State; };
-  			//Convinced this is the problem... but why?
-  			//yScale.domain(Ydata.map(state));
-  			s;
-  			yScale.domain(data.map(gr));
-  			//yScale.domain(data.map(data[1].state));
-  			//console.log("s is" + data[0].State);
   			
   			groups
   				.transition()
   				.duration(750)
   				.delay(function(d, i){ return i *10; })
-  				.attr("transform", function(d, i){ /*console.log(i);*/
-  					//i=i+1;
-  					//console.log("i is " + i);
-  					return "translate(0,"+yScale(Ydata[i].State)+")"; });
+  				.attr("transform", function(d, i){
+  					return "translate(0,"+yScale(yData[i].State)+")"; });
    			
    		};
-   		d3.selectAll("input").on("change", function(){
-   			var value = this. value;
+   		
+   		d3.selectAll("input").on("click", function(){
+   			var value = this.value;
    			reorder(value);
    		})
    		
