@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>CS171 Homework 1</title>
-
+  <title>CS171 Homework 1 </title>
   <style type="text/css">
-  /* YOUR CSS */
+	/* YOUR CSS */
 	h1 {
 		margin-left: 5em;
 	}
@@ -13,76 +12,57 @@
 		margin-left: 11em;
 		font: 16px sans-serif;
 	}
-	
 	caption {
 		padding-bottom: 1em;
 	}
-
-	
-  .evenZebra{
-  	color: black;
-  	background-color: #EBE1CA;
-  }
-  
-  .oddZebra{
-  	color: black;
-  	background-color:  #DBCCA8;
-  
-  }
-  
-  #hover{
-  	color:   rgb(92, 43, 4);
-  	background-color: #BEA05A;
-  
-  }
-  
-  tr th {
-  	cursor: s-resize;
-  }
-  
-  td {
-	padding: 0.3em;
+	.evenZebra{
+		color: black;
+		background-color: #EBE1CA;
 	}
-  
+	.oddZebra{
+		color: black;
+		background-color: #DBCCA8;
+	}
+	#hover{
+		color: rgb(92, 43, 4);
+		background-color: #BEA05A;
+	}
+	tr th {
+		cursor: s-resize;
+	}
+	td {
+		padding: 0.3em;
+	}
   </style>
 </head>
 <body>
-
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
- 
-  //variables
-  var title = "Unemployment Rates for States";
-  var tcaption = "Unemployment Rates for States Monthly Rankings Seasonally Adjusted Dec. 2013";
-  var aSort =3;
-  var nSort = 3;
-  //var sets which column data will initially be sorted by, and is
-  //updated to mark which column data is sorted by
-  var sorted =0;
-  var cursor = "s-resize";
-  var col2=new Array();
-  var min;
-  var max;
+	//variables
+	var title = "Unemployment Rates for States";
+	var tcaption = "Unemployment Rates for States Monthly Rankings Seasonally Adjusted Dec. 2013";
+	var aSort =3;
+	var nSort = 3;
+	var sorted =0;//var sets which column data will initially be sorted by, and is updated
+	var cursor = "s-resize";
+	var col2=new Array();
+	var min;
+	var max;
 
   d3.text("unemp_states_us_nov_2013.tsv", function(text){
 		
 		var parsed = d3.tsv.parseRows(text);
 		var h1 = d3.select("body").append("h1").text(title);
-		
 		var table = d3.select("body").append("table"),
 			caption = table.append("caption").text(tcaption);
 			thead = table.append("thead");
-     	 	tbody = table.append("tbody");
+			tbody = table.append("tbody");
 
-		
 		//Create Header
-		table.selectAll("thead")
-					.append("tr");
-					
-		var header = thead.selectAll("tr");
-		var head = parsed.shift();		
-		
-		header.selectAll("th")
+		table.selectAll("thead").append("tr");
+		//var header = thead.selectAll("tr");
+		var head = parsed.shift();	
+		var header = thead.selectAll("tr").selectAll("th")
 			.data(head)
 			.enter()
 			.append("th")
@@ -147,8 +127,9 @@
 				.attr("class", zebra);
 		}		
 		//on click sort
-		header.selectAll("th")
+		header
 			.on("click", sortCol);
+
 
 		
 		//Fills in body of table
