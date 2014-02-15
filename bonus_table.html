@@ -34,6 +34,7 @@
 		padding: 0.3em;
 	}
   </style>
+  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 </head>
 <body>
   <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -58,12 +59,16 @@
 
 		//Create Header
 		table.selectAll("thead").append("tr");
-		var head = parsed.shift();	
+		var head = parsed.shift();
 		var header = thead.selectAll("tr").selectAll("th")
 			.data(head)
 			.enter()
 			.append("th")
 			.text(function(d) { return d; });
+			
+			header
+			.append("i")
+			.attr("class", "fa fa-angle-down");
 			
 			table.select("th")
 				.attr("class", "sorted");
@@ -108,12 +113,15 @@
 					sorted=1;
 					colSort(d, i);
 					d3.select(this).attr("class", "").style("cursor", "n-resize");
+					d3.select(this).select("i").attr("class", "fa fa-angle-up");
 				}else{
 					sorted=2;
 					colSort(d, i);
 					d3.select(this).attr("class", "sorted").style("cursor", "s-resize");
+					d3.select(this).select("i").attr("class", "fa fa-angle-down");
 				}
 			});
+			
 
 		//Adds rows to table
 		var rows = tbody.selectAll("tr")
@@ -176,7 +184,7 @@
 				}
 			});
 				
-		rows.insert("td")
+		rows.insert("td", "td")
 			.attr("name", function(d){
 				return "col3";
 			})
@@ -206,19 +214,24 @@
 			.style("fill", "#AA4747");
 
 		thead.select("tr")
-			.insert("th")
+			.insert("th", "th")
 			.text("Chart")
 			.on("click", function(d, i){
 				if (d3.select(this).attr("class")=="sorted"){
 					sorted=1;
 					colSort(d, i);
 					d3.select(this).attr("class", "").style("cursor", "n-resize");
+					d3.select(this).select("i").attr("class", "fa fa-angle-up")
 				}else{
 					sorted=2;
 					colSort(d, i);
 					d3.select(this).attr("class", "sorted").style("cursor", "s-resize");
+					d3.select(this).select("i").attr("class", "fa fa-angle-down")
 				}
-		});
+			})
+			.append("i")
+			.attr("class", "fa fa-angle-down");
+			
    });
   </script>
  </body>
